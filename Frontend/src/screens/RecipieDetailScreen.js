@@ -25,7 +25,9 @@ const RecipeDetailScreen = (props) => {
             const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
             //console.log(response.data)
             if (response && response.data) {
-                setMeal(response.data.meals[0]);
+                setMeal(response.data
+                    
+                    .meals[0]);
                 setLoading(false);
             }
         } catch (error) {

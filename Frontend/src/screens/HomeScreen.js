@@ -11,16 +11,21 @@ const HomeScreen = () => {
     const [categories,setcategories]=useState([]);
     const [activecategory,setactivecategory]=useState('');
     const [meals,setmeals]=useState([]);
+    const [fdata, setFdata] = useState({
+        recipie: "",
+    })
 
     useEffect(()=>{
         getCategories();
         getrecipies();
     },[])
+
     const handlechangecategory=catagory=>{
         getrecipies(catagory);
         setactivecategory(catagory);
         setmeals([]);
     }
+
     const getCategories=async()=>{
         try {
             const response=await axios.get('https://www.themealdb.com/api/json/v1/1/categories.php')
@@ -32,9 +37,21 @@ const HomeScreen = () => {
             console.log(error.message);
         }
     }
+
     const getrecipies = async (catagory = "Beef") => {
         try {
             const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${catagory}`)
+            if (response && response.data) {
+                setmeals(response.data.meals)
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    const getsearchedrecipies=async() => {
+        try {
+            const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${fdata.recipie}`)
             if (response && response.data) {
                 setmeals(response.data.meals)
             }
@@ -59,9 +76,10 @@ const HomeScreen = () => {
                     style={styles.TextInput}
                     placeholder="Search Recipies"
                     placeholderTextColor="gray"
+                    onChangeText={(text) => setFdata({ ...fdata, recipie: text })}
                 />
                 <View style={{backgroundColor: 'white',alignContent:"center",alignItems:"center",borderRadius:9999,marginRight:wp(1),marginTop:hp(0.5),height:hp(5.5),width:wp(11)}}>
-                    <Icon1 name="search" color="black" size={hp(4)} marginTop={hp(0.6)}  />
+                    <Icon1 name="search" color="black" size={hp(4)} marginTop={hp(0.6)} onPress={()=>getsearchedrecipies()}  />
                 </View>
             </View>
             <View>
