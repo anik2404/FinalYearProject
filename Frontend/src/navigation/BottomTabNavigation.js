@@ -10,6 +10,8 @@ import Icon from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/Feather';
 import 'react-native-gesture-handler';
+import StackNavigation from './StackNavigation';
+import UserStack from './UserStack';
 
 const BottomTabNavigation = () => {
     const Tab=createBottomTabNavigator();
@@ -75,7 +77,7 @@ const BottomTabNavigation = () => {
         />
         <Tab.Screen
           name="User"
-          component={User}
+          component={UserStack}
           options={{
             tabBarIcon: ({focused})=>{
               return(
