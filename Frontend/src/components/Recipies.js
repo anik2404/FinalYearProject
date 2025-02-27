@@ -25,10 +25,7 @@ const Recipies = ({categories,meals}) => {
                     numColumns={2}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item,i}) => <RecipieCard item={item} index={i} navigation={navigation}/>}
-                    //refreshing={isLoadingNext}
-                    //onRefresh={() => refetch({first: ITEM_CNT})}
                     onEndReachedThreshold={0.1}
-                    //onEndReached={() => loadNext(ITEM_CNT)}
                     />
                 )
             }
