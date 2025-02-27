@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import axios from 'axios';
 
-const apiKey = 'YOUR_OPENAI_API_KEY';
+const apiKey = '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';
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
 
