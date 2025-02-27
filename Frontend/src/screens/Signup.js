@@ -3,8 +3,10 @@ import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity } from 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon1 from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
-export default function Signup({ navigation }) {
+import { useNavigation } from "@react-navigation/native";
 
+const Signup=()=>{
+  const navigation=useNavigation()
   const [fdata, setFdata] = useState({
     name: "",
     email: "",
@@ -22,7 +24,7 @@ export default function Signup({ navigation }) {
       setErrorMsg("Confirm password not matched")
     }
     else {
-      fetch('http://192.168.0.106:3000/user/register', {
+      fetch('http://192.168.104.156:3000/user/register',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -164,6 +166,9 @@ export default function Signup({ navigation }) {
     </ScrollView>
   );
 }
+
+export default Signup;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

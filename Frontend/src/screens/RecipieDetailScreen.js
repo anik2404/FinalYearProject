@@ -15,6 +15,10 @@ const RecipeDetailScreen = (props) => {
     const [meal,setMeal]=useState(null);
     const [loading,setLoading]=useState(true);
     let item=props.route.params;
+    const [fdata, setFdata] = useState({
+        id: item.idMeal,
+        likes:1
+    })
 
     useEffect(()=>{
         getMealData(item.idMeal);
@@ -25,14 +29,38 @@ const RecipeDetailScreen = (props) => {
             const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
             //console.log(response.data)
             if (response && response.data) {
-                setMeal(response.data
-                    
-                    .meals[0]);
+                setMeal(response.data.meals[0]);
                 setLoading(false);
             }
         } catch (error) {
             console.log(error.message);
         }
+    }
+
+    const likecount=()=>{
+        setIsFavourite(!isFavourite);
+        if (fdata.id == "")  {
+            setErrorMsg("All fields are required")
+        }
+        else {
+            fetch('http://192.168.104.156:3000/recipie/likecount', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(fdata)
+            })
+              .then(res => res.json()).then(
+                data => {
+                  if (data.error) {
+                    setErrorMsg(data.error);
+                  }
+                  else {
+                    console.log(data.likes)
+                  }
+                }
+              )
+          }
     }
   return (
     <ScrollView
@@ -51,7 +79,7 @@ const RecipeDetailScreen = (props) => {
             <TouchableOpacity onPress={()=>{navigation.goBack()}} style={{marginLeft:5,backgroundColor:'white',borderRadius:9999,height:hp(5),width:wp(10),alignItems:'center'}}>
                 <Icon name="chevron-left" size={35} color='orange' marginTop={hp(0.3)}/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{setIsFavourite(!isFavourite)}} style={{marginLeft:hp(33),backgroundColor:'white',borderRadius:9999,height:hp(5),width:wp(10),alignItems:'center'}}>
+            <TouchableOpacity onPress={()=>{likecount()}} style={{marginLeft:hp(33),backgroundColor:'white',borderRadius:9999,height:hp(5),width:wp(10),alignItems:'center'}}>
                 <Icon name="heart" size={30} color={isFavourite ?"red":"gray"} style={{marginTop:hp(0.7)}}/>
             </TouchableOpacity>
         </Animated.View>
