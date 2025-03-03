@@ -1,11 +1,9 @@
 const mongoose=require("mongoose");
 
 const recipieSchema=mongoose.Schema({
-    idmeal:{type:String,required:true},
-    likes:{type:BigInt,required:true},
-    //userid:{type:String,required:true},
-},{
-    versionKey:false
+    idMeal:{type:String,required:true},
+    likes:{type:Number,required:true},
+    userid:{type:[String],required:true},
 })
 
 
