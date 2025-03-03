@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useContext } from 'react';
 import { View, Text,StyleSheet,Image,TextInput,ScrollView } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon1 from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
 import Categories from '../components/Categories';
 import Recipies from '../components/Recipies';
+import { AuthContext } from "../context/AuthContext";
 
 const HomeScreen = () => {
     const [categories,setcategories]=useState([]);
@@ -14,10 +15,10 @@ const HomeScreen = () => {
     const [fdata, setFdata] = useState({
         recipie: "",
     })
-
     useEffect(()=>{
         getCategories();
         getrecipies();
+        //fetchToken();
     },[])
 
     const handlechangecategory=catagory=>{
@@ -37,6 +38,11 @@ const HomeScreen = () => {
             console.log(error.message);
         }
     }
+
+    //const fetchToken = async () => {
+    //    const storedUserid = await AsyncStorage.getItem("userid");
+    //    setuserid(storedUserid);
+    //};
 
     const getrecipies = async (catagory = "Beef") => {
         try {

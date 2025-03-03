@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState ,useContext } from "react";
 import tw from 'twrnc';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, } from "react-native";
+import { AuthContext } from "../context/AuthContext";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from "@react-navigation/native";
 
@@ -10,8 +11,10 @@ const User = () => {
     email: "",
     password: ""
   })
+  const { setuserid } = useContext(AuthContext);
   const [errormsg, setErrorMsg] = useState(null);
-  const sendToBackend = () => {
+
+  const sendToBackend = async () => {
     if ((fdata.email == "") || (fdata.password == "")) {
       setErrorMsg("All fields are required")
     }
@@ -24,12 +27,13 @@ const User = () => {
         body: JSON.stringify(fdata)
       })
         .then(res => res.json()).then(
-          data => {
+          async(data) => {
             if (data.error) {
               setErrorMsg(data.error);
             }
             else {
-              navigation.navigate('UserDetails')
+              setuserid(data.uid.q);
+              navigation.navigate('UserDetails',{userid:data.uid.q})
             }
           }
         )

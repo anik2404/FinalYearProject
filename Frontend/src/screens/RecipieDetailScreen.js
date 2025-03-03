@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState,useContext} from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import Animated,{FadeIn, FadeInDown} from 'react-native-reanimated';
+import { AuthContext } from "../context/AuthContext";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/Entypo'
 import axios from 'axios';
@@ -15,14 +16,20 @@ const RecipeDetailScreen = (props) => {
     const [meal,setMeal]=useState(null);
     const [loading,setLoading]=useState(true);
     let item=props.route.params;
+    const { userid } = useContext(AuthContext);
+    const [likes,setlikes]=useState(0);
     const [fdata, setFdata] = useState({
-        id: item.idMeal,
-        likes:1
+        idMeal: item.idMeal,
+        likes:1,
+        isFavourite:false,
+        userid:userid,
     })
 
     useEffect(()=>{
         getMealData(item.idMeal);
-    })
+        checkIfLiked();
+        totallikes();
+    },[])
 
     const getMealData = async (id) => {
         try {
@@ -37,12 +44,42 @@ const RecipeDetailScreen = (props) => {
         }
     }
 
+    const checkIfLiked = async () => {
+        try {
+            const response = await fetch(`http://192.168.104.156:3000/recipie/isLiked`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idMeal: item.idMeal, userid: userid })
+            });
+            const data = await response.json();
+            setIsFavourite(data.isFavourite);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const totallikes=async()=>{
+        try {
+            const response = await fetch(`http://192.168.104.156:3000/recipie/totallikes`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idMeal: item.idMeal})
+            });
+            const data = await response.json();
+            setlikes(data.likecount);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const likecount=()=>{
-        setIsFavourite(!isFavourite);
-        if (fdata.id == "")  {
-            setErrorMsg("All fields are required")
+        if ((fdata.userid == null) ||(fdata.userid=='null')) {
+            alert('You need to login first to like any recipie')
         }
         else {
+            const newFavouriteState = !isFavourite;
+            setIsFavourite(newFavouriteState);
+            fdata.isFavourite=newFavouriteState;
             fetch('http://192.168.104.156:3000/recipie/likecount', {
                 method: 'POST',
                 headers: {
@@ -56,6 +93,7 @@ const RecipeDetailScreen = (props) => {
                     setErrorMsg(data.error);
                   }
                   else {
+                    //setnooflikes(data.likes);
                     console.log(data.likes)
                   }
                 }
@@ -75,12 +113,13 @@ const RecipeDetailScreen = (props) => {
                 style={{width:wp(95),height:hp(50),borderRadius:27,marginTop:hp(1),borderBottomLeftRadius:40,borderBottomRightRadius:40}}
             />
         </View>
-        <Animated.View entering={FadeIn.delay(200).duration(1000)}style={{position:'absolute',flexDirection:'row',justifyContent:'space-between',padding:35,paddingLeft:20}}>
-            <TouchableOpacity onPress={()=>{navigation.goBack()}} style={{marginLeft:5,backgroundColor:'white',borderRadius:9999,height:hp(5),width:wp(10),alignItems:'center'}}>
-                <Icon name="chevron-left" size={35} color='orange' marginTop={hp(0.3)}/>
+        <Animated.View entering={FadeIn.delay(200).duration(1000)}style={{position:'absolute',flexDirection:'row',padding:35,paddingLeft:10}}>
+            <TouchableOpacity onPress={()=>{navigation.goBack()}} style={{marginLeft:5,backgroundColor:'white',borderRadius:9999,height:hp(8),width:wp(16),alignItems:'center'}}>
+                <Icon name="chevron-left" size={55} color='orange' marginTop={hp(0.3)}/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{likecount()}} style={{marginLeft:hp(33),backgroundColor:'white',borderRadius:9999,height:hp(5),width:wp(10),alignItems:'center'}}>
+            <TouchableOpacity onPress={()=>{likecount()}} style={{marginRight:wp(50),marginLeft:hp(30),backgroundColor:'white',borderRadius:9999,height:hp(8),width:wp(16),alignItems:'center'}}>
                 <Icon name="heart" size={30} color={isFavourite ?"red":"gray"} style={{marginTop:hp(0.7)}}/>
+                <Text>{likes}</Text>
             </TouchableOpacity>
         </Animated.View>
         {
