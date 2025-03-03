@@ -5,9 +5,6 @@ import BottomTabNavigation from './BottomTabNavigation';
 import RecipeDetailScreen from '../screens/RecipieDetailScreen';
 import 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
-import Signup from '../screens/Signup';
-import UserDetails from '../screens/UserDetails';
-import User from '../screens/User';
 
 const StackNavigation = () => {
     const Stack = createNativeStackNavigator();
@@ -34,8 +31,6 @@ const StackNavigation = () => {
             },
           }}
         />
-        <Stack.Screen name="RecipieDetail" component={RecipeDetailScreen} />
-        <Stack.Screen name="Signup" component={Signup} />
       </Stack.Navigator>
     );
 };

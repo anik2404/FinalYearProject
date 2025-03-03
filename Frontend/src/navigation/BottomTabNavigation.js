@@ -1,17 +1,15 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import HomeScreen from '../screens/HomeScreen';
 import AIChatbot from '../screens/AIChatbot';
 import AddRecipies from '../screens/AddRecipies';
 import Notification from '../screens/Notification';
-import User from '../screens/User';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/Feather';
 import 'react-native-gesture-handler';
-import StackNavigation from './StackNavigation';
 import UserStack from './UserStack';
+import HomeStack from './HomeStack';
 
 const BottomTabNavigation = () => {
     const Tab=createBottomTabNavigator();
@@ -33,7 +31,7 @@ const BottomTabNavigation = () => {
       >
         <Tab.Screen
           name="TabBarHome"
-          component={HomeScreen}
+          component={HomeStack}
           options={{
             tabBarIcon: ({focused})=>{
               return(
