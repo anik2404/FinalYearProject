@@ -89,13 +89,13 @@ const RecipeDetailScreen = (props) => {
             })
               .then(res => res.json()).then(
                 data => {
-                  if (data.error) {
-                    setErrorMsg(data.error);
-                  }
-                  else {
-                    //setnooflikes(data.likes);
-                    console.log(data.likes)
-                  }
+                    if (data.error) {
+                        setErrorMsg(data.error)
+                    }
+                    else {
+                        setlikes(data.likes)
+                        console.log(data.likes)
+                    }
                 }
               )
           }
