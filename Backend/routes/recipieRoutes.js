@@ -142,7 +142,6 @@ recipieRouter.post('/bookmark', async (req, res) => {
                                 { $pull: { userid: userid } },
                                 { new: true }
                             );
-                            //console.log("Recipie disliked sucessfully")
                             res.send({ bookmarked: false })
                         }
                     }

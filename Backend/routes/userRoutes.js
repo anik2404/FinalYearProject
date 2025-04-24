@@ -4,7 +4,6 @@ const bcrypt=require("bcrypt")
 const userRouter=express.Router();
 const jwt=require('jsonwebtoken');
 
-
 userRouter.get("/",async(req,res)=>{
     res.send("all the users");
 })
