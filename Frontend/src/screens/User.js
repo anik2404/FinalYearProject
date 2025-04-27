@@ -19,7 +19,7 @@ const User = () => {
       setErrorMsg("All fields are required")
     }
     else {
-      fetch('http://192.168.104.156:3000/user/login', {
+      fetch('http://192.168.85.156:3000/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

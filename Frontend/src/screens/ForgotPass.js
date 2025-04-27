@@ -14,7 +14,7 @@ const ForgotPass=()=>{
       setErrorMsg("All fields are required")
     }
     else {
-      fetch('http://192.168.0.111:3000/user/forgotpass', {
+      fetch('http://192.168.85.156:3000/user/forgotpass', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

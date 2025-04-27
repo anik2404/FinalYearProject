@@ -6,7 +6,6 @@ import Icon1 from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
 import Categories from '../components/Categories';
 import Recipies from '../components/Recipies';
-import AddedRecipies from '../components/AddedRecipies';
 import { AuthContext } from "../context/AuthContext";
 
 const HomeScreen = () => {
@@ -66,7 +65,7 @@ const HomeScreen = () => {
                 //console.log(response.data.meals)
             }
             else{
-                fetch('http://192.168.104.156:3000/addedrecipie/get', {
+                fetch('http://192.168.85.156:3000/addedrecipie/get', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',

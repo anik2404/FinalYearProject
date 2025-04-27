@@ -24,7 +24,7 @@ const Signup=()=>{
       setErrorMsg("Confirm password not matched")
     }
     else {
-      fetch('http://192.168.104.156:3000/user/register',{
+      fetch('http://192.168.85.156:3000/user/register',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

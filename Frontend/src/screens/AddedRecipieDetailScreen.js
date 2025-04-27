@@ -14,31 +14,27 @@ import AddedRecipieDescription from '../components/AddedRecipieDescription';
 const AddedRecipeDetailScreen = (props) => {
     const navigation=useNavigation();
     const [isFavourite,setIsFavourite]=useState(false);
-    const [meal,setMeal]=useState(null);
-    const [loading,setLoading]=useState(true);
+    //const [meal,setMeal]=useState([]);
+    const [loading,setLoading]=useState(false);
     let item=props.route.params;
+    //console.log(item);
     const { userid } = useContext(AuthContext);
     const [likes,setlikes]=useState(0);
     const [fdata, setFdata] = useState({
-        idMeal: item.idMeal,
+        idMeal: item._id,
         likes:1,
         isFavourite:false,
         userid:userid,
     })
 
     useEffect(()=>{
-        getMealData();
         checkIfLiked();
         totallikes();
     },[])
 
-    const getMealData = () => {
-        setMeal(item);
-    }
-
     const checkIfLiked = async () => {
         try {
-            const response = await fetch(`http://192.168.104.156:3000/recipie/isLiked`, {
+            const response = await fetch(`http://192.168.85.156:3000/recipie/isLiked`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idMeal: item._id, userid: userid })
@@ -52,7 +48,7 @@ const AddedRecipeDetailScreen = (props) => {
 
     const totallikes=async()=>{
         try {
-            const response = await fetch(`http://192.168.104.156:3000/recipie/totallikes`, {
+            const response = await fetch(`http://192.168.85.156:3000/recipie/totallikes`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idMeal: item._id})
@@ -72,7 +68,7 @@ const AddedRecipeDetailScreen = (props) => {
             const newFavouriteState = !isFavourite;
             setIsFavourite(newFavouriteState);
             fdata.isFavourite=newFavouriteState;
-            fetch('http://192.168.104.156:3000/recipie/likecount', {
+            fetch('http://192.168.85.156:3000/recipie/likecount', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,7 +114,7 @@ const AddedRecipeDetailScreen = (props) => {
             loading?(
                 <Loading size="large" marginTop={hp(5)}/>
             ):(
-                <AddedRecipieDescription meal={meal}/>
+                <AddedRecipieDescription meal={item}/>
             )
         }
     </ScrollView>

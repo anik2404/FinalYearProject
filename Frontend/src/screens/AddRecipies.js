@@ -80,7 +80,7 @@ const AddRecipies = () => {
       alert('Fill all the details of your recipie')
     }
     else{
-      fetch('http://192.168.104.156:3000/addedrecipie/add', {
+      fetch('http://192.168.85.156:3000/addedrecipie/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
