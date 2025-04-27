@@ -1,6 +1,7 @@
 const mongoose=require("mongoose");
 
 const addRecipieSchema=mongoose.Schema({
+    idMeal:{type:String},
     rname:{type:String,required:true},
     region:{type:String,required:true},
     instructions:{type:String,required:true},
