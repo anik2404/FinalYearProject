@@ -14,7 +14,6 @@ const RecipieDescription = ({meal}) => {
     useEffect(() => {
         checkIfBookmarked();
     }, []);
-    
 
     const ingredientsIndexes=(meal)=>{
         if(!meal) return [];
@@ -42,7 +41,7 @@ const RecipieDescription = ({meal}) => {
         }
         else{
             try {
-                const response = await fetch(`http://192.168.0.111:3000/recipie/bookmark`, {
+                const response = await fetch(`http://192.168.85.156:3000/recipie/bookmark`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ idMeal: meal.idMeal, userid })
@@ -57,7 +56,7 @@ const RecipieDescription = ({meal}) => {
     
     const checkIfBookmarked = async () => {
         try {
-            const response = await fetch(`http://192.168.0.111:3000/recipie/isBookmarked`, {
+            const response = await fetch(`http://192.168.85.156:3000/recipie/isBookmarked`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idMeal: meal.idMeal, userid })
