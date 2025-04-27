@@ -9,35 +9,26 @@ import { CachedImage } from '../helpers/Image';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Recipies = ({categories,meals}) => {
+const AddedRecipies = ({categories,addedmeals}) => {
     const navigation=useNavigation();
-    //console.log(meals)
+    //console.log(addedmeals)
   return (
     <View>
         <Text style={{fontSize:hp(3),marginBottom:hp(2.5),fontWeight:'600',color:'orange'}}>Recipies</Text>
         <View>
             {
-                categories.length==0 || meals.length==0 ? (
+                categories.length==0 || addedmeals.length==0 ? (
                     <Loading size="large" style={{marginTop:hp(5)}}/>
                 ):(
-                    meals[0].idMeal!==""?
                         <MasonryList
-                        data={meals}
-                        keyExtractor={(item)=> item.idMeal}
-                        numColumns={2}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({item,i}) => <RecipieCard item={item} index={i} navigation={navigation}/>}
-                        onEndReachedThreshold={0.1}
-                        />:
-                        <MasonryList
-                        data={meals}
+                        data={addedmeals}
                         keyExtractor={(item)=> item._id}
                         numColumns={2}
                         showsVerticalScrollIndicator={false}
                         renderItem={({item,i}) => <AddedRecipieCard items={item} index={i} navigation={navigation}/>}
                         onEndReachedThreshold={0.1}
                         />
-                    )
+                )
             }
         </View>
     </View>
@@ -51,7 +42,7 @@ const AddedRecipieCard=({items,index,navigation})=>{
         <Animated.View entering={FadeInDown.delay(index*100).delay(600).springify().damping(12)}>
             <Pressable
             style={{width:'100%',paddingLeft: isEven? 0:8,paddingRight:isEven ?8:0,marginBottom:hp(2),alignItems:'center'}}
-            onPress={()=>navigation.navigate('AddRecipieDetail',{...items})}>
+            onPress={()=>navigation.navigate('RecipieDetail',{...items})}>
                 <Image
                 source={{uri:items.avatar}}
                 style={{width:'100%',height:index%3==0?hp(25):hp(35),borderRadius:35}}
@@ -66,26 +57,5 @@ const AddedRecipieCard=({items,index,navigation})=>{
     )
 }
 
-const RecipieCard=({item,index,navigation})=>{
-    let isEven=index%2==0;
-    return(
-        <Animated.View entering={FadeInDown.delay(index*100).delay(600).springify().damping(12)}>
-            <Pressable
-            style={{width:'100%',paddingLeft: isEven? 0:8,paddingRight:isEven ?8:0,marginBottom:hp(2),alignItems:'center'}}
-            onPress={()=>navigation.navigate('RecipieDetail',{...item})}>
-                <Image
-                source={{uri:item.strMealThumb}}
-                style={{width:'100%',height:index%3==0?hp(25):hp(35),borderRadius:35}}
-                sharedTransitionTag={item.strMeal}/>
-                <Text style={{fontSize:hp(2),marginTop:hp(1),fontWeight:'600'}}>
-                    {
-                        item.strMeal?.length>20?item.strMeal.slice(0,20)+'...':item.strMeal
-                    }
-                </Text>
-            </Pressable>
-        </Animated.View>
-    )
-}
 
-
-export default Recipies;
+export default AddedRecipies;
