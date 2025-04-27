@@ -11,8 +11,8 @@ addrecipieRouter.get("/", (req, res) => {
 })
 
 addrecipieRouter.post("/add",async(req,res)=>{
-    const{rname,region,instructions,avatar}=req.body;
-    console.log(req.body)
+    const{idMeal,rname,region,instructions,avatar}=req.body;
+    //console.log(req.body)
     if(!rname||!region||!instructions || !avatar )
     {
         return res.status(422).json({
@@ -23,6 +23,7 @@ addrecipieRouter.post("/add",async(req,res)=>{
         const newrecipie=new AddRecipieModel(req.body)
         await newrecipie.save()
         const token=jwt.sign({ _id:newrecipie._id }, process.env.JWT_SECRET)
+        //console.log(newrecipie)
         return res.status(201).json({
             token
         });
@@ -33,10 +34,10 @@ addrecipieRouter.post("/add",async(req,res)=>{
     }
 })
 
-addrecipieRouter.post("/getuploads",async(req,res)=>{
-    const{id}=req.body
-    const saved_user=await UploadModel.find({userid:id})
-    if(!saved_user)
+addrecipieRouter.post("/get",async(req,res)=>{
+    const{recipie}=req.body
+    const saved_recipie=await AddRecipieModel.find({rname:recipie})
+    if(!saved_recipie)
     {
         return res.status(422).json({
             error: "Invalid credentials"
@@ -44,7 +45,7 @@ addrecipieRouter.post("/getuploads",async(req,res)=>{
     }
     try{
         return res.status(201).json({
-            saved_user
+            saved_recipie
         });
         
     }
