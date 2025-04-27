@@ -6,12 +6,14 @@ import Icon1 from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
 import Categories from '../components/Categories';
 import Recipies from '../components/Recipies';
+import AddedRecipies from '../components/AddedRecipies';
 import { AuthContext } from "../context/AuthContext";
 
 const HomeScreen = () => {
     const [categories,setcategories]=useState([]);
     const [activecategory,setactivecategory]=useState('');
     const [meals,setmeals]=useState([]);
+    const [addedmeals,setaddedmeals]=useState({"idMeal":""});
     const [fdata, setFdata] = useState({
         recipie: "",
     })
@@ -58,8 +60,30 @@ const HomeScreen = () => {
     const getsearchedrecipies=async() => {
         try {
             const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${fdata.recipie}`)
-            if (response && response.data) {
+            //console.log(response.data)
+            if (response.data.meals) {
                 setmeals(response.data.meals)
+                //console.log(response.data.meals)
+            }
+            else{
+                fetch('http://192.168.104.156:3000/addedrecipie/get', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(fdata)
+                  })
+                    .then(res => res.json()).then(
+                      data => {
+                        if (data.error) {
+                          setErrorMsg(data.error);
+                        }
+                        else {
+                          //console.log(data.saved_recipie);
+                          setmeals(data.saved_recipie)
+                        }
+                      }
+                    )
             }
         } catch (error) {
             console.log(error.message);

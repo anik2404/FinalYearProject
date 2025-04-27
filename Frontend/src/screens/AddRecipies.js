@@ -14,6 +14,7 @@ const AddRecipies = () => {
   const [errormsg, setErrorMsg] = useState(null)
   const [image, setImage] = useState(null);
   const [upload, setupload] = useState({
+    idMeal:"",
     rname: "",
     region:"",
     instructions:""
@@ -79,7 +80,7 @@ const AddRecipies = () => {
       alert('Fill all the details of your recipie')
     }
     else{
-      fetch('http://192.168.104.156:3000/addrecipie/add', {
+      fetch('http://192.168.104.156:3000/addedrecipie/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
