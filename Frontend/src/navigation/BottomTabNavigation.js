@@ -63,17 +63,6 @@ const BottomTabNavigation = () => {
           }}
         />
         <Tab.Screen
-          name="Notification"
-          component={Notification}
-          options={{
-            tabBarIcon: ({focused})=>{
-              return(
-                <Icon name='bell' size={hp(3.5)} marginTop={hp(0.3)} color={focused?'orange':'black'}/>
-              )
-            }
-          }}
-        />
-        <Tab.Screen
           name="User"
           component={UserStack}
           options={{
