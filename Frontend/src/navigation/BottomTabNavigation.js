@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import AIChatbot from '../screens/AIChatbot';
@@ -11,6 +11,7 @@ import UserStack from './UserStack';
 import HomeStack from './HomeStack';
 
 const BottomTabNavigation = () => {
+
     const Tab=createBottomTabNavigator();
     return(
       <Tab.Navigator
