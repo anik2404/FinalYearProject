@@ -3,6 +3,7 @@ import StackNavigation from './src/navigation/StackNavigation';
 import { AuthProvider } from './src/context/AuthContext';
 
 function App() {
+  
   return (
     <AuthProvider>
       <NavigationContainer>
