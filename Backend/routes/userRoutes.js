@@ -9,8 +9,8 @@ userRouter.get("/",async(req,res)=>{
 })
 
 userRouter.post('/register',async(req,res)=>{
-    const { name,email,password,dob,grade }=req.body;
-    if(!email || !name || !password|| !dob || !grade)
+    const { name,email,mobile,password }=req.body;
+    if(!email || !name || !password|| !mobile)
     {
         return res.status(422).send({
             error: "All fields required"
@@ -26,7 +26,7 @@ userRouter.post('/register',async(req,res)=>{
                 })
             }
             const user1=new UserModel({
-                name,email,password,grade,dob
+                name,email,password,mobile
             })
             try{
                 await user1.save();
