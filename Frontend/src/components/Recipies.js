@@ -9,15 +9,14 @@ import { CachedImage } from '../helpers/Image';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Recipies = ({categories,meals}) => {
+const Recipies = ({meals}) => {
     const navigation=useNavigation();
     //console.log(meals)
   return (
     <View>
-        <Text style={{fontSize:hp(3),marginBottom:hp(2.5),fontWeight:'600',color:'orange'}}>Recipies</Text>
         <View>
             {
-                categories.length==0 || meals.length==0 ? (
+                meals.length==0 ? (
                     <Loading size="large" style={{marginTop:hp(5)}}/>
                 ):(
                     meals[0].idMeal!==""?
@@ -56,11 +55,12 @@ const AddedRecipieCard=({items,index,navigation})=>{
                 source={{uri:items.avatar}}
                 style={{width:'100%',height:index%3==0?hp(25):hp(35),borderRadius:35}}
                 sharedTransitionTag={items.rname}/>
-                <Text style={{fontSize:hp(2),marginTop:hp(1),fontWeight:'600'}}>
+                <Text style={{fontSize:hp(2),marginTop:hp(1),fontWeight:'600',color:index==0?"orange":"black"}}>
                     {
                         items.rname?.length>20?items.rname.slice(0,20)+'...':items.rname
                     }
                 </Text>
+                {index==0?<Text style={{fontSize:hp(2),marginTop:hp(1),fontWeight:'600',color:"orange"}}>AI suggested recipie</Text>:<Text></Text>}
             </Pressable>
         </Animated.View>
     )

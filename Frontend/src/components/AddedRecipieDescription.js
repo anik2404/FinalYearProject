@@ -21,10 +21,10 @@ const AddedRecipieDescription = ({meal}) => {
         }
         else{
             try {
-                const response = await fetch(`http://192.168.85.156:3000/recipie/bookmark`, {
+                const response = await fetch(`http://192.168.184.156:3000/recipie/bookmark`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ idMeal: meal.idMeal, userid })
+                    body: JSON.stringify({ idMeal: meal._id, userid })
                 });
                 const data = await response.json();
                 setIsBookmarked(data.bookmarked);
@@ -36,7 +36,7 @@ const AddedRecipieDescription = ({meal}) => {
     
     const checkIfBookmarked = async () => {
         try {
-            const response = await fetch(`http://192.168.85.156:3000/recipie/isBookmarked`, {
+            const response = await fetch(`http://192.168.184.156:3000/recipie/isBookmarked`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idMeal: meal._id, userid })
@@ -65,7 +65,7 @@ const AddedRecipieDescription = ({meal}) => {
                     </Text>           
                 </Animated.View>
                 <Animated.View entering={FadeInDown.duration(700).springify().damping(12)} style={{ marginLeft: wp(3) }}>
-                    <TouchableOpacity onPress={toggleBookmark}
+                    <TouchableOpacity onPress={()=>toggleBookmark()}
                         style={{marginRight:wp(1),backgroundColor:'white',
                         borderRadius:9999,height:hp(8),width:wp(16),alignItems:'center'}}>
                             <Icon name="bookmark" size={50} color={isBookmarked ? "orange" : "black"} style={{marginTop:hp(1)}}/>
