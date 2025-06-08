@@ -1,30 +1,33 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity } from "react-native";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon1 from 'react-native-vector-icons/AntDesign';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Icon from 'react-native-vector-icons/AntDesign';
+import Icon1 from 'react-native-vector-icons/Fontisto';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
+import Icon3 from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../context/AuthContext";
 
-const Signup=()=>{
-  const navigation=useNavigation()
+const Signup = () => {
+  const navigation = useNavigation()
+  const { setuserid } = useContext(AuthContext);
   const [fdata, setFdata] = useState({
     name: "",
     email: "",
-    dob: "",
-    grade: "",
+    mobile: "",
     password: "",
   })
   const [errormsg, setErrorMsg] = useState(null);
 
   const sendToBackend = () => {
-    if ((fdata.name == "") || (fdata.email == "") || (fdata.dob == "") || (fdata.grade == "") ||  (fdata.password == "") || (fdata.conpsswd == "")) {
+    if ((fdata.name == "") || (fdata.email == "") || (fdata.dob == "") || (fdata.grade == "") || (fdata.password == "") || (fdata.conpassword == "")) {
       setErrorMsg("All fields are required")
     }
-    else if (fdata.conpsswd != fdata.password) {
+    else if (fdata.conpassword != fdata.password) {
       setErrorMsg("Confirm password not matched")
     }
     else {
-      fetch('http://192.168.85.156:3000/user/register',{
+      fetch('http://192.168.184.156:3000/user/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -37,131 +40,108 @@ const Signup=()=>{
               setErrorMsg(data.error);
             }
             else {
+              console.log(data.uid.p)
+              setuserid(data.uid.p);
               alert('Account created succesfully');
-              navigation.navigate('UserMain');
+              navigation.navigate('UserDetails',{userid:data.uid.q});
             }
           }
         )
     }
   }
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.headingText1}>Please fill up the details to</Text>
-        <Text style={styles.headingText2}>complete your account</Text>
-        <View>
-          {
-            errormsg ? <Text style={{ marginLeft: 50, "color": "red" }}>{errormsg}</Text> : null
-          }
-        </View>
-        <View style={styles.inputView}>
-          <Icon1
-            name="user"
-            size={30}
-            color="black"
-            style={{ marginTop: 10}}
-          />
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Name*"
-            placeholderTextColor="#003f5c"
-            onPressIn={() => setErrorMsg(null)}
-            onChangeText={(text) => setFdata({ ...fdata, name: text })}
-          />
-        </View>
-
-        <View style={styles.inputView}>
-        <Icon
-            name="email"
-            size={30}
-            color="black"
-            style={{ marginTop: 10}}
-          />
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Email ID*"
-            placeholderTextColor="#003f5c"
-            onPressIn={() => setErrorMsg(null)}
-            onChangeText={(text) => setFdata({ ...fdata, email: text })}
-          />
-        </View>
-        <View style={styles.inputView}>
-        <Icon1
-            name="calendar"
-            size={30}
-            color="black"
-            style={{ marginTop: 10}}
-          />
-          <TextInput
-            style={styles.TextInput}
-            placeholder="DD/MM/YYYY (Date of Birth*)"
-            placeholderTextColor="#003f5c"
-            onPressIn={() => setErrorMsg(null)}
-            onChangeText={(text) => setFdata({ ...fdata, dob: text })}
-          />
-        </View>
-        <View style={styles.inputView}>
+    <ScrollView
+      style={{ backgroundColor: '#F5FCFF',flex: 1 }}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        paddingBottom: hp(8)
+      }}>
+      <Text style={styles.headingText}>Create account</Text>
+      <View>
+        {
+          errormsg ? <Text style={{ marginLeft: 50, "color": "red" }}>{errormsg}</Text> : null
+        }
+      </View>
+      <View style={styles.inputView}>
         <Icon2
-            name="graduation-cap"
-            size={30}
-            color="black"
-            style={{ marginTop: 10}}
-          />
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Select Grade/Course*"
-            placeholderTextColor="#003f5c"
-            onPressIn={() => setErrorMsg(null)}
-            onChangeText={(text) => setFdata({ ...fdata, grade: text })}
-          />
-        </View>
-        <View style={styles.inputView}>
+          name="user"
+          size={hp(3)}
+          color="black"
+          style={{ marginTop: hp(1.2), marginLeft: wp(5) }}
+        />
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Name"
+          placeholderTextColor="#000"
+          onPressIn={() => setErrorMsg(null)}
+          onChangeText={(text) => setFdata({ ...fdata, name: text })}
+        />
+      </View>
+      <View style={styles.inputView}>
         <Icon1
-            name="lock"
-            size={30}
-            color="black"
-            style={{ marginTop: 10}}
-          />
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Set Password*"
-            placeholderTextColor="#003f5c"
-            secureTextEntry={true}
-            onPressIn={() => setErrorMsg(null)}
-            onChangeText={(text) => setFdata({ ...fdata, password: text })}
-          />
-        </View>
-        <View style={styles.inputView}>
-        <Icon1
-            name="lock"
-            size={30}
-            color="black"
-            style={{ marginTop: 10}}
-          />
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Confirm Password*"
-            placeholderTextColor="#003f5c"
-            secureTextEntry={true}
-            onPressIn={() => setErrorMsg(null)}
-            onChangeText={(text) => setFdata({ ...fdata, conpsswd: text })}
-          />
-        </View>
+          name="email"
+          size={hp(2)}
+          color="black"
+          style={{ marginTop: hp(1.6), marginLeft: wp(5) }}
+        />
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Email"
+          placeholderTextColor="#000"
+          onPressIn={() => setErrorMsg(null)}
+          onChangeText={(text) => setFdata({ ...fdata, email: text })}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <Icon2
+          name="mobile-phone"
+          size={hp(3.4)}
+          color="black"
+          style={{ marginTop: hp(1.2), marginLeft: wp(5), marginRight: wp(0.5) }}
+        />
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Mobile No"
+          placeholderTextColor="#000"
+          onPressIn={() => setErrorMsg(null)}
+          onChangeText={(text) => setFdata({ ...fdata, mobile: text })}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <Icon2
+          name="lock"
+          size={hp(3)}
+          color="black"
+          style={{ marginTop: hp(1.2), marginLeft: wp(5) }}
+        />
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Password"
+          placeholderTextColor="#000"
+          onPressIn={() => setErrorMsg(null)}
+          onChangeText={(text) => setFdata({ ...fdata, password: text })}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <Icon
+          name="lock"
+          size={hp(2.3)}
+          color="black"
+          style={{ marginTop: hp(1.5), marginLeft: wp(4) }}
+        />
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Confirm Password"
+          placeholderTextColor="#000"
+          onPressIn={() => setErrorMsg(null)}
+          onChangeText={(text) => setFdata({ ...fdata, conpassword: text })}
+        />
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.createtext}>Create</Text>
         <TouchableOpacity style={styles.signupBtn}>
-          <Text style={styles.signupText1}
-            onPress={() => {
-              sendToBackend();
-            }
-            }
-          >SIGN UP</Text>
+          <Icon3 style={styles.icon} name="arrow-forward-outline" onPress={() => sendToBackend()} />
         </TouchableOpacity>
-        <View style={{ margin: 20, flexDirection: 'row' }}>
-          <Text style={styles.userText}>Already a user?</Text>
-          <TouchableOpacity>
-            <Text style={styles.signin_button} onPress={() =>
-              navigation.navigate('login')}>Sign In</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </ScrollView>
   );
@@ -170,83 +150,59 @@ const Signup=()=>{
 export default Signup;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  headingText1:
+  headingText:
   {
-    height: 30,
-    marginLeft: 80,
-    marginTop: 90,
-    fontSize: 20,
-    fontWeight: "bold",
-    "color": "#0F40D8"
-  },
-  headingText2:
-  {
-    height: 40,
-    marginLeft: 95,
-    marginBottom: 80,
-    fontSize: 20,
-    fontWeight: "bold",
-    "color": "#0F40D8"
+    height: hp(12),
+    marginLeft: wp(20),
+    marginTop: hp(15),
+    fontSize: hp(4),
+    fontWeight: "500",
+    color: "orange",
+    marginBottom:hp(3)
   },
   inputView: {
-    "borderColor": "#312e81",
-    borderBottomWidth: 2,
-    width: "80%",
-    height: 45,
-    marginLeft: 40,
-    marginBottom: 20,
-    flexDirection: 'row'
+    backgroundColor: "#fff",
+    borderRadius: hp(3),
+    width: wp(80),
+    height: hp(6),
+    marginLeft: wp(10),
+    elevation: 10,
+    marginBottom: hp(4),
+    borderColor: 'orange',
+    borderWidth: hp(0.2),
+    flexDirection: "row"
   },
   TextInput: {
-    height: 50,
     flex: 1,
-    padding: 10,
-    "color": "#312e81",
-    fontSize: 16,
-    marginLeft: 10
+    padding: hp(1.5),
+    "color": "#000",
+    fontWeight: "bold",
+    fontSize: hp(2.1),
   },
   signupBtn: {
-    width: "30%",
-    borderRadius: 10,
-    height: 45,
+    width: hp(8),
+    borderRadius: hp(3),
+    height: hp(5.5),
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 50,
-    marginLeft: 135,
-    backgroundColor: "#0F40D8",
+    marginTop: hp(5),
+    marginLeft: wp(1.5),
+    backgroundColor: "#fff",
+    elevation: 10,
+    borderColor: 'orange',
+    borderWidth: hp(0.2),
   },
-  signupText1:
+  createtext:
   {
-    fontSize: 16,
-    fontWeight: "bold",
-    "color": "#fff"
+    color: "#000",
+    fontSize: hp(3),
+    height:hp(5),
+    fontWeight: "500",
+    marginTop:hp(5.5),
+    marginLeft:wp(51)
   },
-  userText:
-  {
-    height: 20,
-    fontSize: 16,
-    marginLeft: 80,
-    fontWeight: "bold",
-    "color": "#000"
+  icon: {
+    fontSize: hp(4),
+    color: "orange"
   },
-  signin_button:
-  {
-    fontSize: 16,
-    "color": "#38bdf8",
-    fontWeight: "bold",
-    marginLeft: 10
-  },
-  imageStyle: {
-    padding: 10,
-    marginLeft: 5,
-    marginTop: 10,
-    height: 25,
-    width: 25,
-    resizeMode: 'stretch',
-    alignItems: 'center',
-  }
 });

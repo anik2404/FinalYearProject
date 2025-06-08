@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, } from "rea
 import { AuthContext } from "../context/AuthContext";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from "@react-navigation/native";
+import Icon1 from 'react-native-vector-icons/Ionicons'
+import Icon2 from 'react-native-vector-icons/AntDesign';
 
 const User = () => {
   const navigation=useNavigation();
@@ -19,7 +21,7 @@ const User = () => {
       setErrorMsg("All fields are required")
     }
     else {
-      fetch('http://192.168.85.156:3000/user/login', {
+      fetch('http://192.168.184.156:3000/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +35,7 @@ const User = () => {
             }
             else {
               setuserid(data.uid.q);
-              navigation.navigate('UserDetails',{userid:data.uid.q})
+              navigation.navigate('UserDetails');
             }
           }
         )
@@ -41,27 +43,34 @@ const User = () => {
   }
   return (
 
-    <View style={{ flex: 1, backgroundColor: '#F5FCFF' }}>
-      <View style={styles.container1}>
-        <Image style={tw`w-full h-full`} source={require("./pic.jpg")} />
-      </View>
-
-      <View style={styles.container}>
+    <View style={{ flex: 1, alignContent:"center",backgroundColor: '#F5FCFF'}}>
         <Text style={styles.signinText}>SIGN IN</Text>
         <View style={styles.inputView}>
+          <Icon2
+            name="user"
+            size={hp(3)}
+            color="black"
+            style={{ marginTop:hp(1.2),marginLeft:wp(5)}}
+          />
           <TextInput
             style={styles.TextInput}
             placeholder="User ID"
-            placeholderTextColor="#003f5c"
+            placeholderTextColor="#000"
             onPressIn={() => setErrorMsg(null)}
             onChangeText={(text) => setFdata({ ...fdata, email: text })}
           />
         </View>
         <View style={styles.inputView}>
+          <Icon2
+            name="lock"
+            size={hp(3)}
+            color="black"
+            style={{ marginTop:hp(1.2),marginLeft:wp(5)}}
+          />
           <TextInput
             style={styles.TextInput}
             placeholder="Password"
-            placeholderTextColor="#003f5c"
+            placeholderTextColor="#000"
             secureTextEntry={true}
             onPressIn={() => setErrorMsg(null)}
             onChangeText={(text) => setFdata({ ...fdata, password: text })}
@@ -74,114 +83,101 @@ const User = () => {
             }}
           >Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginBtn}>
-          <Text style={styles.loginText}
-            onPress={() => {
-              sendToBackend();
-            }
-            }>LOGIN</Text>
-        </TouchableOpacity>
-        <View style={{ margin: 20, flexDirection: 'row' }}>
+        <View>
+          {
+            errormsg ? <Text style={{ "color": "red",marginLeft:wp(30),marginTop:hp(2) }}>{errormsg}</Text> : null
+          }
+        </View>
+        <View style={{flexDirection:'row'}}>
+          <Text style={styles.signintext}>Sign in</Text>
+          <TouchableOpacity style={styles.loginBtn}>
+            <Icon1 style={styles.icon} name="arrow-forward-outline" onPress={() => sendToBackend()} />
+          </TouchableOpacity>
+        </View>
+        <View style={{flexDirection: 'row',marginTop:hp(9) }}>
           <Text style={styles.userText}>New User?</Text>
           <TouchableOpacity>
             <Text style={styles.signup_button} onPress={() =>
-              navigation.navigate('Signup')}>Sign Up</Text>
+              navigation.navigate('Signup')}>Create</Text>
           </TouchableOpacity>
         </View>
-        <View>
-          {
-            errormsg ? <Text style={{ "color": "red" }}>{errormsg}</Text> : null
-          }
-        </View>
-      </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#312e81",
-    height: '66.666667%',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-  },
-  container1: {
-    flex: 1,
-    backgroundColor: "#fff",
-    height: '33.333333%'
-  },
   signinText:
   {
-    height: 40,
-    marginLeft: 135,
-    marginTop: 20,
-    marginBottom: 20,
-    fontSize: 32,
-    fontWeight: "bold",
-    "color": "#fff"
+    marginLeft: wp(32),
+    marginTop: hp(25),
+    marginBottom: hp(8),
+    fontSize: hp(5),
+    fontWeight: "500",
+    color:"orange"
   },
   userText:
   {
-    height: 20,
-    fontSize: 16,
-    marginLeft: 90,
-    fontWeight: "bold",
-    "color": "#fff"
+    height: hp(5),
+    fontSize: hp(2.2),
+    marginLeft: hp(14.5),
+    fontWeight: "500",
+    color: "#000"
   },
   inputView: {
-    backgroundColor: "#C2FEFE",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginLeft: 55,
-    marginBottom: 20,
+    backgroundColor: "#fff",
+    borderRadius: hp(3),
+    width: wp(80),
+    height: hp(6),
+    marginLeft: wp(10),
+    elevation:10,
+    marginBottom: hp(4),
+    borderColor: 'orange',
+    borderWidth: hp(0.2),
+    flexDirection:"row"
   },
   TextInput: {
     flex: 1,
-    padding: 10,
-    "color": "#312e81",
+    padding: hp(1.5),
+    "color": "#000",
     fontWeight: "bold",
-    marginLeft: 20,
-    fontSize: 16,
+    fontSize: hp(2.1),
   },
   forgot_button: {
-    height: 30,
-    marginLeft: 130,
-    "color": "#38bdf8",
-    fontSize: 16,
-    fontWeight: "bold",
+    marginLeft: hp(24),
+    color: "orange",
+    fontSize: hp(2.2),
+    fontWeight: "500",
   },
   signup_button:
   {
-    fontSize: 16,
-    "color": "#38bdf8",
-    fontWeight: "bold",
-    marginLeft: 10
+    fontSize: hp(2.2),
+    color: "orange",
+    fontWeight: "500",
+    marginLeft: wp(2)
   },
   loginBtn: {
-    width: "70%",
-    borderRadius: 30,
-    height: 45,
+    width: hp(8),
+    borderRadius: hp(3),
+    height: hp(5.5),
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
-    marginLeft: 55,
-    backgroundColor: "#FA0ED6",
+    marginTop: hp(8),
+    marginLeft:wp(1.5),
+    backgroundColor: "#fff",
+    elevation:10,
+    borderColor: 'orange',
+    borderWidth: hp(0.2),
   },
-  loginText:
-  {
-    fontSize: 20,
-    "color": "#77F3F7",
-    fontWeight: "bold"
+  icon: {
+    fontSize: hp(4),
+    color: "orange"
   },
-  imageStyle: {
-    padding: 10,
-    marginLeft: 20,
-    marginTop: 10,
-    height: 25,
-    width: 25,
-    resizeMode: 'stretch',
-    alignItems: 'center',
+  signintext:{
+    color: "#000",
+    fontSize: hp(3),
+    height:hp(5),
+    fontWeight: "500",
+    marginTop:hp(8.5),
+    marginLeft:wp(50.5)
   }
 })
 

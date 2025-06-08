@@ -34,7 +34,7 @@ const AddedRecipeDetailScreen = (props) => {
 
     const checkIfLiked = async () => {
         try {
-            const response = await fetch(`http://192.168.85.156:3000/recipie/isLiked`, {
+            const response = await fetch(`http://192.168.184.156:3000/recipie/isLiked`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idMeal: item._id, userid: userid })
@@ -48,7 +48,7 @@ const AddedRecipeDetailScreen = (props) => {
 
     const totallikes=async()=>{
         try {
-            const response = await fetch(`http://192.168.85.156:3000/recipie/totallikes`, {
+            const response = await fetch(`http://192.168.184.156:3000/recipie/totallikes`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idMeal: item._id})
@@ -68,7 +68,7 @@ const AddedRecipeDetailScreen = (props) => {
             const newFavouriteState = !isFavourite;
             setIsFavourite(newFavouriteState);
             fdata.isFavourite=newFavouriteState;
-            fetch('http://192.168.85.156:3000/recipie/likecount', {
+            fetch('http://192.168.184.156:3000/recipie/likecount', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

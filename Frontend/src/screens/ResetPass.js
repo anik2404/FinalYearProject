@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import tw from 'twrnc';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, } from "react-native";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation, useRoute } from "@react-navigation/native";
+import Icon1 from 'react-native-vector-icons/Ionicons'
+import Icon2 from 'react-native-vector-icons/AntDesign';
 
-const ResetPass=()=>{
-  const route=useRoute()
+const ResetPass = () => {
+  const route = useRoute()
   const id1 = route.params?.id;
-  const navigation=useNavigation()
+  const navigation = useNavigation()
   const [fdata, setFdata] = useState({
     newpsswd: "",
     connewpsswd: "",
@@ -21,7 +24,7 @@ const ResetPass=()=>{
       setErrorMsg("Confirm password not matched")
     }
     else {
-      fetch('http://192.168.85.156:3000/user/resetpass', {
+      fetch('http://192.168.184.156:3000/user/resetpass', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -43,46 +46,36 @@ const ResetPass=()=>{
   }
   return (
 
-    <View style={{ flex: 1, backgroundColor: '#F5FCFF' }}>
-      <View style={styles.container1}>
-        <Image style={tw`w-full h-full`} source={require("./pic.jpg")} />
+    <View style={{ flex: 1, alignContent: "center", backgroundColor: '#F5FCFF' }}>
+      <Text style={styles.resetText}>RESET PASSWORD</Text>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Enter New Password"
+          placeholderTextColor="#000"
+          onPressIn={() => setErrorMsg(null)}
+          onChangeText={(text) => setFdata({ ...fdata, newpsswd: text })}
+        />
       </View>
-
-      <View style={styles.container}>
-        <Text style={styles.signinText}>RESET PASSWORD</Text>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Enter New Password"
-            placeholderTextColor="#003f5c"
-            secureTextEntry={true}
-            onPressIn={() => setErrorMsg(null)}
-            onChangeText={(text) => setFdata({ ...fdata, newpsswd: text })}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Confirm New Password"
-            placeholderTextColor="#003f5c"
-            secureTextEntry={true}
-            onPressIn={() => setErrorMsg(null)}
-            onChangeText={(text) => setFdata({ ...fdata, connewpsswd: text })}
-          />
-        </View>
-        <TouchableOpacity style={styles.loginBtn}>
-          <Text style={styles.loginText}
-            onPress={() => {
-              sendToBackend();
-            }}
-          >
-            Set Password</Text>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Confirm your New Password"
+          placeholderTextColor="#000"
+          onPressIn={() => setErrorMsg(null)}
+          onChangeText={(text) => setFdata({ ...fdata, connewpsswd: text })}
+        />
+      </View>
+      <View>
+        {
+          errormsg ? <Text style={{ "color": "red", marginLeft: wp(30), marginTop: hp(2) }}>{errormsg}</Text> : null
+        }
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={styles.setpasstext}>Set Password</Text>
+        <TouchableOpacity style={styles.setpassBtn}>
+          <Icon1 style={styles.icon} name="arrow-forward-outline" onPress={() => sendToBackend()} />
         </TouchableOpacity>
-        <View>
-          {
-            errormsg ? <Text style={{ "color": "red" }}>{errormsg}</Text> : null
-          }
-        </View>
       </View>
     </View>
   );
@@ -90,65 +83,58 @@ const ResetPass=()=>{
 export default ResetPass;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#312e81",
-    height: '66.666667%'
-  },
-  container1: {
-    flex: 1,
-    backgroundColor: "#fff",
-    height: '33.333333%'
-  },
-  signinText:
+  resetText:
   {
-    height: 40,
-    marginLeft: 80,
-    marginTop: 40,
-    marginBottom: 50,
-    fontSize: 32,
-    fontWeight: "bold",
-    "color": "#fff"
-  },
-  userText:
-  {
-    height: 20,
-    fontSize: 16,
-    marginLeft: 90,
-    fontWeight: "bold",
-    "color": "#fff"
+    marginLeft: wp(13),
+    marginTop: hp(25),
+    marginBottom: hp(8),
+    fontSize: hp(4),
+    fontWeight: "500",
+    color: "orange"
   },
   inputView: {
-    backgroundColor: "#C2FEFE",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginLeft: 55,
-    marginBottom: 20,
+    backgroundColor: "#fff",
+    borderRadius: hp(3),
+    width: wp(80),
+    height: hp(6),
+    marginLeft: wp(10),
+    elevation: 10,
+    marginBottom: hp(4),
+    borderColor: 'orange',
+    borderWidth: hp(0.2),
   },
   TextInput: {
-    height: 50,
     flex: 1,
-    padding: 10,
-    marginLeft: 20,
-    "color": "#312e81",
+    padding: hp(1.5),
+    "color": "#000",
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: hp(2.1),
+    marginLeft: wp(4)
   },
-  loginBtn: {
-    width: "70%",
-    borderRadius: 30,
-    height: 45,
+  setpassBtn: {
+    width: hp(8),
+    borderRadius: hp(3),
+    height: hp(5.5),
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
-    marginLeft: 55,
-    backgroundColor: "#FA0ED6",
+    marginTop: hp(8),
+    marginLeft: wp(1.5),
+    backgroundColor: "#fff",
+    elevation: 10,
+    borderColor: 'orange',
+    borderWidth: hp(0.2),
   },
-  loginText:
+  setpasstext:
   {
-    fontSize: 20,
-    "color": "#77F3F7",
-    fontWeight: "bold"
+    color: "#000",
+    fontSize: hp(3),
+    height: hp(5),
+    fontWeight: "500",
+    marginTop: hp(8.5),
+    marginLeft: wp(30)
+  },
+  icon: {
+    fontSize: hp(4),
+    color: "orange"
   },
 });
